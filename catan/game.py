@@ -45,7 +45,7 @@ class Game(object):
         self.robber = catan.pieces.Piece(catan.pieces.PieceType.robber, None)
         if logging == 'on':
             self.catanlog = catanlog.CatanLog()
-        else
+        else:
             self.catanlog = catanlog.NoopCatanLog()
 
         self.state = None # set in #set_state
