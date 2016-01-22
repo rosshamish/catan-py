@@ -5,7 +5,9 @@ Package catan provides models for representing and manipulating a game of catan
 
 Board coordinates must be specified as described in module [`hexgrid`](https://github.com/rosshamish/hexgrid).
 
-Class Game supports undo and redo.
+`.catan` files will be written to the working directory by class Game (see [`catanlog`](https://github.com/rosshamish/catanlog)).
+
+class Game also supports undo and redo, which is useful for building GUIs.
 
 Supports Python 3. Might work in Python 2.
 
