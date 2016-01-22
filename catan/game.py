@@ -26,13 +26,13 @@ class Game(object):
 
     e.g. self.set_state(states.GameStateNotInGame(self))
     """
-    def __init__(self, players=None, board=None, log=None, pregame='on'):
+    def __init__(self, players=None, board=None, logging='on', pregame='on'):
         """
         Create a Game with the given options.
 
         :param players: list(Player)
         :param board: Board
-        :param log: CatanLog
+        :param logging: (on|off)
         :param pregame: (on|off)
         """
         self.observers = set()
@@ -43,7 +43,10 @@ class Game(object):
         self.players = players or list()
         self.board = board or catan.board.Board()
         self.robber = catan.pieces.Piece(catan.pieces.PieceType.robber, None)
-        self.catanlog = log or catanlog.CatanLog()
+        if logging == 'on':
+            self.catanlog = catanlog.CatanLog()
+        else
+            self.catanlog = catanlog.NoopCatanLog()
 
         self.state = None # set in #set_state
         self.dev_card_state = None # set in #set_dev_card_state
