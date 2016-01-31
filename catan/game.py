@@ -314,7 +314,7 @@ class Game(object):
         self.board.place_piece(piece, node)
         self.catanlog.log_player_buys_settlement(self.get_cur_player(), node)
         if self.state.is_in_pregame():
-            self.set_state(catan.states.GameStatePreGamePlaceRoad(self))
+            self.set_state(catan.states.GameStatePreGamePlacingPiece(self, catan.pieces.PieceType.road))
         else:
             self.set_state(catan.states.GameStateDuringTurnAfterRoll(self))
 
@@ -391,7 +391,7 @@ class Game(object):
 
         self.set_dev_card_state(catan.states.DevCardNotPlayedState(self))
         if self.state.is_in_pregame():
-            self.set_state(catan.states.GameStatePreGamePlaceSettlement(self))
+            self.set_state(catan.states.GameStatePreGamePlacingPiece(self, catan.pieces.PieceType.settlement))
         else:
             self.set_state(catan.states.GameStateBeginTurn(self))
 
