@@ -135,8 +135,25 @@ def _generate_tiles(terrain_opts, numbers_opts):
                    [catan.board.Terrain.wheat] * 4)
         random.shuffle(terrain)
     elif terrain_opts == Opt.preset:
-        terrain = ([catan.board.Terrain.desert] * catan.board.NUM_TILES)
-        logging.warning('Preset terrain option not yet implemented')
+        terrain = ([catan.board.Terrain.wood,
+                    catan.board.Terrain.wheat,
+                    catan.board.Terrain.ore,
+                    catan.board.Terrain.wheat,
+                    catan.board.Terrain.sheep,
+                    catan.board.Terrain.brick,
+                    catan.board.Terrain.sheep,
+                    catan.board.Terrain.wheat,
+                    catan.board.Terrain.wood,
+                    catan.board.Terrain.ore,
+                    catan.board.Terrain.brick,
+                    catan.board.Terrain.desert,
+                    catan.board.Terrain.wheat,
+                    catan.board.Terrain.sheep,
+                    catan.board.Terrain.wood,
+                    catan.board.Terrain.ore,
+                    catan.board.Terrain.sheep,
+                    catan.board.Terrain.wood,
+                    catan.board.Terrain.brick])
 
     if numbers_opts == Opt.empty:
         numbers = ([catan.board.HexNumber.none] * catan.board.NUM_TILES)
@@ -150,8 +167,25 @@ def _generate_tiles(terrain_opts, numbers_opts):
         random.shuffle(numbers)
         numbers.insert(terrain.index(catan.board.Terrain.desert), catan.board.HexNumber.none)
     elif numbers_opts == Opt.preset:
-        numbers = ([catan.board.HexNumber.none] * catan.board.NUM_TILES)
-        logging.warning('Preset numbers option not yet implemented')
+        numbers = ([catan.board.HexNumber.six,
+                    catan.board.HexNumber.four,
+                    catan.board.HexNumber.eight,
+                    catan.board.HexNumber.three,
+                    catan.board.HexNumber.six,
+                    catan.board.HexNumber.four,
+                    catan.board.HexNumber.eight,
+                    catan.board.HexNumber.eleven,
+                    catan.board.HexNumber.five,
+                    catan.board.HexNumber.three,
+                    catan.board.HexNumber.nine,
+                    catan.board.HexNumber.none,
+                    catan.board.HexNumber.nine,
+                    catan.board.HexNumber.twelve,
+                    catan.board.HexNumber.five,
+                    catan.board.HexNumber.ten,
+                    catan.board.HexNumber.two,
+                    catan.board.HexNumber.ten,
+                    catan.board.HexNumber.eleven])
 
     assert len(numbers) == catan.board.NUM_TILES
     assert len(terrain) == catan.board.NUM_TILES
