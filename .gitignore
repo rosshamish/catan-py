@@ -2,3 +2,5 @@ build
 *.iml
 dist
 MANIFEST
+.egg-info
+*.egg-info

@@ -182,7 +182,7 @@ class Game(object):
         self.set_players(players)
         if self.options.get('pregame') is None or self.options.get('pregame') == 'on':
             logging.debug('Entering pregame, game options={}'.format(self.options))
-            self.set_state(catan.states.GameStatePreGamePlaceSettlement(self))
+            self.set_state(catan.states.GameStatePreGamePlacingPiece(self, catan.pieces.PieceType.settlement))
         elif self.options.get('pregame') == 'off':
             logging.debug('Skipping pregame, game options={}'.format(self.options))
             self.set_state(catan.states.GameStateBeginTurn(self))
