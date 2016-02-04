@@ -178,7 +178,6 @@ def _generate_tiles(terrain_opts, numbers_opts):
                     catan.board.HexNumber.eleven,
                     catan.board.HexNumber.four,
                     catan.board.HexNumber.eight,
-                    catan.board.HexNumber.none,
                     catan.board.HexNumber.ten,
                     catan.board.HexNumber.nine,
                     catan.board.HexNumber.four,
@@ -186,6 +185,8 @@ def _generate_tiles(terrain_opts, numbers_opts):
                     catan.board.HexNumber.six,
                     catan.board.HexNumber.three,
                     catan.board.HexNumber.eleven])
+        desert_idx = terrain.index(catan.board.Terrain.desert)
+        numbers.insert(desert_idx, catan.board.HexNumber.none)
 
     assert len(numbers) == catan.board.NUM_TILES
     assert len(terrain) == catan.board.NUM_TILES
