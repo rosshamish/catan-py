@@ -605,7 +605,7 @@ class GameStateSteal(GameStateInGame):
     def steal(self, victim):
         self.game.catanlog.log_player_moves_robber_and_steals(
             self.game.get_cur_player(),
-            self.game.robber_tile,
+            hexgrid.location(hexgrid.TILE, self.game.robber_tile),
             victim
         )
         self.game.set_state(GameStateDuringTurnAfterRoll(self.game))
@@ -647,7 +647,7 @@ class GameStateStealUsingKnight(GameStateSteal):
     def steal(self, victim):
         self.game.catanlog.log_player_plays_dev_knight(
             self.game.get_cur_player(),
-            self.game.robber_tile,
+            hexgrid.location(hexgrid.TILE, self.game.robber_tile),
             victim
         )
         self.game.set_state(GameStateDuringTurnAfterRoll(self.game))

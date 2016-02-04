@@ -346,8 +346,8 @@ class Game(object):
     @undoredo.undoable
     def trade(self, trade):
         giver = trade.giver()
-        giving = [(n, t.value) for n, t in trade.giving()]
-        getting = [(n, t.value) for n, t in trade.getting()]
+        giving = trade.giving()
+        getting = trade.getting()
         if trade.getter() in catan.board.PortType:
             getter = trade.getter()
             self.catanlog.log_player_trades_with_port(giver, giving, getter, getting)
@@ -365,24 +365,24 @@ class Game(object):
 
     @undoredo.undoable
     def play_monopoly(self, resource):
-        self.catanlog.log_player_plays_dev_monopoly(self.get_cur_player(), resource)
+        self.catanlog.log_player_plays_monopoly(self.get_cur_player(), resource)
         self.set_dev_card_state(catan.states.DevCardPlayedState(self))
 
     @undoredo.undoable
     def play_year_of_plenty(self, resource1, resource2):
-        self.catanlog.log_player_plays_dev_year_of_plenty(self.get_cur_player(), resource1, resource2)
+        self.catanlog.log_player_plays_year_of_plenty(self.get_cur_player(), resource1, resource2)
         self.set_dev_card_state(catan.states.DevCardPlayedState(self))
 
     @undoredo.undoable
     def play_road_builder(self, edge1, edge2):
-        self.catanlog.log_player_plays_dev_road_builder(self.get_cur_player(),
-                                                        hexgrid.location(hexgrid.EDGE, edge1),
-                                                        hexgrid.location(hexgrid.EDGE, edge2))
+        self.catanlog.log_player_plays_road_builder(self.get_cur_player(),
+                                                    hexgrid.location(hexgrid.EDGE, edge1),
+                                                    hexgrid.location(hexgrid.EDGE, edge2))
         self.set_dev_card_state(catan.states.DevCardPlayedState(self))
 
     @undoredo.undoable
     def play_victory_point(self):
-        self.catanlog.log_player_plays_dev_victory_point(self.get_cur_player())
+        self.catanlog.log_player_plays_victory_point(self.get_cur_player())
         self.set_dev_card_state(catan.states.DevCardPlayedState(self))
 
     @undoredo.undoable
