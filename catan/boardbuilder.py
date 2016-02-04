@@ -167,24 +167,24 @@ def _generate_tiles(terrain_opts, numbers_opts):
         random.shuffle(numbers)
         numbers.insert(terrain.index(catan.board.Terrain.desert), catan.board.HexNumber.none)
     elif numbers_opts == Opt.preset:
-        numbers = ([catan.board.HexNumber.six,
-                    catan.board.HexNumber.four,
-                    catan.board.HexNumber.eight,
-                    catan.board.HexNumber.three,
+        numbers = ([catan.board.HexNumber.five,
+                    catan.board.HexNumber.two,
                     catan.board.HexNumber.six,
-                    catan.board.HexNumber.four,
-                    catan.board.HexNumber.eight,
-                    catan.board.HexNumber.eleven,
-                    catan.board.HexNumber.five,
                     catan.board.HexNumber.three,
-                    catan.board.HexNumber.nine,
-                    catan.board.HexNumber.none,
+                    catan.board.HexNumber.eight,
+                    catan.board.HexNumber.ten,
                     catan.board.HexNumber.nine,
                     catan.board.HexNumber.twelve,
+                    catan.board.HexNumber.eleven,
+                    catan.board.HexNumber.four,
+                    catan.board.HexNumber.eight,
+                    catan.board.HexNumber.none,
+                    catan.board.HexNumber.ten,
+                    catan.board.HexNumber.nine,
+                    catan.board.HexNumber.four,
                     catan.board.HexNumber.five,
-                    catan.board.HexNumber.ten,
-                    catan.board.HexNumber.two,
-                    catan.board.HexNumber.ten,
+                    catan.board.HexNumber.six,
+                    catan.board.HexNumber.three,
                     catan.board.HexNumber.eleven])
 
     assert len(numbers) == catan.board.NUM_TILES
