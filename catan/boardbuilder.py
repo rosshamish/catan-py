@@ -45,8 +45,8 @@ def get_opts(opts):
     :return: dictionary mapping str->Opt. All possible keys are present.
     """
     defaults = {
-        'terrain': Opt.empty,
-        'numbers': Opt.empty,
+        'terrain': Opt.random,
+        'numbers': Opt.preset,
         'ports': Opt.preset,
         'pieces': Opt.preset,
         'players': Opt.preset,
