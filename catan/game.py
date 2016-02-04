@@ -345,15 +345,15 @@ class Game(object):
 
     @undoredo.undoable
     def trade(self, trade):
-        giver = trade.giver().color
+        giver = trade.giver()
         giving = [(n, t.value) for n, t in trade.giving()]
         getting = [(n, t.value) for n, t in trade.getting()]
         if trade.getter() in catan.board.PortType:
-            getter = trade.getter().value
+            getter = trade.getter()
             self.catanlog.log_player_trades_with_port(giver, giving, getter, getting)
             logging.debug('trading {} to port={} to get={}'.format(giving, getter, getting))
         else:
-            getter = trade.getter().color
+            getter = trade.getter()
             self.catanlog.log_player_trades_with_other(giver, giving, getter, getting)
             logging.debug('trading {} to player={} to get={}'.format(giving, getter, getting))
         self.notify_observers()

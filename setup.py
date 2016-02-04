@@ -3,9 +3,9 @@ from distutils.core import setup
 with open("README.md", "r") as fp:
     long_description = fp.read()
 
-version = {'__version__': '0.3.5'}
-# with open('version.py', 'r') as fp:
-#     exec(fp.read(), version)
+version = dict()
+with open('version.py', 'r') as fp:
+    exec(fp.read(), version)
 
 setup(name="catan",
       version=version['__version__'],
