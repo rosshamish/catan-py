@@ -301,7 +301,7 @@ class Game(object):
         #self.assert_legal_road(edge)
         piece = catan.pieces.Piece(catan.pieces.PieceType.road, self.get_cur_player())
         self.board.place_piece(piece, edge)
-        self.catanlog.log_player_buys_road(self.get_cur_player(), edge)
+        self.catanlog.log_player_buys_road(self.get_cur_player(), hexgrid.location(hexgrid.EDGE, edge))
         if self.state.is_in_pregame():
             self.end_turn()
         else:
@@ -312,7 +312,7 @@ class Game(object):
         #self.assert_legal_settlement(node)
         piece = catan.pieces.Piece(catan.pieces.PieceType.settlement, self.get_cur_player())
         self.board.place_piece(piece, node)
-        self.catanlog.log_player_buys_settlement(self.get_cur_player(), node)
+        self.catanlog.log_player_buys_settlement(self.get_cur_player(), hexgrid.location(hexgrid.NODE, node))
         if self.state.is_in_pregame():
             self.set_state(catan.states.GameStatePreGamePlacingPiece(self, catan.pieces.PieceType.road))
         else:
@@ -323,7 +323,7 @@ class Game(object):
         #self.assert_legal_city(node)
         piece = catan.pieces.Piece(catan.pieces.PieceType.city, self.get_cur_player())
         self.board.place_piece(piece, node)
-        self.catanlog.log_player_buys_city(self.get_cur_player(), node)
+        self.catanlog.log_player_buys_city(self.get_cur_player(), hexgrid.location(hexgrid.NODE, node))
         self.set_state(catan.states.GameStateDuringTurnAfterRoll(self))
 
     @undoredo.undoable
@@ -375,7 +375,9 @@ class Game(object):
 
     @undoredo.undoable
     def play_road_builder(self, edge1, edge2):
-        self.catanlog.log_player_plays_dev_road_builder(self.get_cur_player(), edge1, edge2)
+        self.catanlog.log_player_plays_dev_road_builder(self.get_cur_player(),
+                                                        hexgrid.location(hexgrid.EDGE, edge1),
+                                                        hexgrid.location(hexgrid.EDGE, edge2))
         self.set_dev_card_state(catan.states.DevCardPlayedState(self))
 
     @undoredo.undoable
