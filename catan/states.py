@@ -23,7 +23,7 @@ e.g.
         self.state.steal(victim)
     # class GameStateSteal
     def steal(self, victim):
-        self.game.catanlog.log_player_moves_robber_and_steals(
+        self.game.catanlog.log_robber(
             self.game.get_cur_player(),
             self.game.robber_tile,
             victim
@@ -31,7 +31,7 @@ e.g.
         self.game.set_state(GameStateDuringTurnAfterRoll(self.game))
     # class GameStateStealUsingKnight
     def steal(self, victim):
-        self.game.catanlog.log_player_plays_dev_knight(
+        self.game.catanlog.log_plays_dev_knight(
             self.game.get_cur_player(),
             self.game.robber_tile,
             victim
@@ -603,7 +603,7 @@ class GameStateSteal(GameStateInGame):
         return True
 
     def steal(self, victim):
-        self.game.catanlog.log_player_moves_robber_and_steals(
+        self.game.catanlog.log_robber(
             self.game.get_cur_player(),
             hexgrid.location(hexgrid.TILE, self.game.robber_tile),
             victim
@@ -645,7 +645,7 @@ class GameStateStealUsingKnight(GameStateSteal):
     - BEFORE the player has stolen a card using the knight
     """
     def steal(self, victim):
-        self.game.catanlog.log_player_plays_dev_knight(
+        self.game.catanlog.log_plays_knight(
             self.game.get_cur_player(),
             hexgrid.location(hexgrid.TILE, self.game.robber_tile),
             victim

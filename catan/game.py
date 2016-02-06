@@ -43,10 +43,13 @@ class Game(object):
         self.players = players or list()
         self.board = board or catan.board.Board()
         self.robber = catan.pieces.Piece(catan.pieces.PieceType.robber, None)
+
+        # catanlog: writing, reading
         if logging == 'on':
             self.catanlog = catanlog.CatanLog()
         else:
             self.catanlog = catanlog.NoopCatanLog()
+        self.catanlog_reader = catanlog.Reader()
 
         self.state = None # set in #set_state
         self.dev_card_state = None # set in #set_dev_card_state
@@ -132,6 +135,9 @@ class Game(object):
         self.robber_tile = game.robber_tile
 
         self.notify_observers()
+
+    def read_from_file(self, file):
+        self.catanlog_reader.use_file(file)
 
     def notify(self, observable):
         self.notify_observers()
@@ -257,7 +263,7 @@ class Game(object):
 
     @undoredo.undoable
     def roll(self, roll):
-        self.catanlog.log_player_roll(self.get_cur_player(), roll)
+        self.catanlog.log_roll(self.get_cur_player(), roll)
         self.last_roll = roll
         self.last_player_to_roll = self.get_cur_player()
         if int(roll) == 7:
@@ -301,7 +307,7 @@ class Game(object):
         #self.assert_legal_road(edge)
         piece = catan.pieces.Piece(catan.pieces.PieceType.road, self.get_cur_player())
         self.board.place_piece(piece, edge)
-        self.catanlog.log_player_buys_road(self.get_cur_player(), hexgrid.location(hexgrid.EDGE, edge))
+        self.catanlog.log_buys_road(self.get_cur_player(), hexgrid.location(hexgrid.EDGE, edge))
         if self.state.is_in_pregame():
             self.end_turn()
         else:
@@ -312,7 +318,7 @@ class Game(object):
         #self.assert_legal_settlement(node)
         piece = catan.pieces.Piece(catan.pieces.PieceType.settlement, self.get_cur_player())
         self.board.place_piece(piece, node)
-        self.catanlog.log_player_buys_settlement(self.get_cur_player(), hexgrid.location(hexgrid.NODE, node))
+        self.catanlog.log_buys_settlement(self.get_cur_player(), hexgrid.location(hexgrid.NODE, node))
         if self.state.is_in_pregame():
             self.set_state(catan.states.GameStatePreGamePlacingPiece(self, catan.pieces.PieceType.road))
         else:
@@ -323,12 +329,12 @@ class Game(object):
         #self.assert_legal_city(node)
         piece = catan.pieces.Piece(catan.pieces.PieceType.city, self.get_cur_player())
         self.board.place_piece(piece, node)
-        self.catanlog.log_player_buys_city(self.get_cur_player(), hexgrid.location(hexgrid.NODE, node))
+        self.catanlog.log_buys_city(self.get_cur_player(), hexgrid.location(hexgrid.NODE, node))
         self.set_state(catan.states.GameStateDuringTurnAfterRoll(self))
 
     @undoredo.undoable
     def buy_dev_card(self):
-        self.catanlog.log_player_buys_dev_card(self.get_cur_player())
+        self.catanlog.log_buys_dev_card(self.get_cur_player())
         self.notify_observers()
 
     @undoredo.undoable
@@ -350,11 +356,11 @@ class Game(object):
         getting = trade.getting()
         if trade.getter() in catan.board.PortType:
             getter = trade.getter()
-            self.catanlog.log_player_trades_with_port(giver, giving, getter, getting)
+            self.catanlog.log_trades_with_port(giver, giving, getter, getting)
             logging.debug('trading {} to port={} to get={}'.format(giving, getter, getting))
         else:
             getter = trade.getter()
-            self.catanlog.log_player_trades_with_other(giver, giving, getter, getting)
+            self.catanlog.log_trades_with_player(giver, giving, getter, getting)
             logging.debug('trading {} to player={} to get={}'.format(giving, getter, getting))
         self.notify_observers()
 
@@ -365,29 +371,29 @@ class Game(object):
 
     @undoredo.undoable
     def play_monopoly(self, resource):
-        self.catanlog.log_player_plays_monopoly(self.get_cur_player(), resource)
+        self.catanlog.log_plays_monopoly(self.get_cur_player(), resource)
         self.set_dev_card_state(catan.states.DevCardPlayedState(self))
 
     @undoredo.undoable
     def play_year_of_plenty(self, resource1, resource2):
-        self.catanlog.log_player_plays_year_of_plenty(self.get_cur_player(), resource1, resource2)
+        self.catanlog.log_plays_year_of_plenty(self.get_cur_player(), resource1, resource2)
         self.set_dev_card_state(catan.states.DevCardPlayedState(self))
 
     @undoredo.undoable
     def play_road_builder(self, edge1, edge2):
-        self.catanlog.log_player_plays_road_builder(self.get_cur_player(),
+        self.catanlog.log_plays_road_builder(self.get_cur_player(),
                                                     hexgrid.location(hexgrid.EDGE, edge1),
                                                     hexgrid.location(hexgrid.EDGE, edge2))
         self.set_dev_card_state(catan.states.DevCardPlayedState(self))
 
     @undoredo.undoable
     def play_victory_point(self):
-        self.catanlog.log_player_plays_victory_point(self.get_cur_player())
+        self.catanlog.log_plays_victory_point(self.get_cur_player())
         self.set_dev_card_state(catan.states.DevCardPlayedState(self))
 
     @undoredo.undoable
     def end_turn(self):
-        self.catanlog.log_player_ends_turn(self.get_cur_player())
+        self.catanlog.log_ends_turn(self.get_cur_player())
         self.set_cur_player(self.state.next_player())
         self._cur_turn += 1
 

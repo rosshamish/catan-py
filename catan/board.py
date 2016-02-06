@@ -229,6 +229,16 @@ class Board(object):
             port.direction = hexgrid.rotate_direction(hexgrid.EDGE, port.direction, ccw=True)
         self.notify_observers()
 
+    def set_terrain(self, terrain):
+        self.tiles = [Tile(tile.tile_id, t, tile.number) for t, tile in zip(terrain, self.tiles)]
+
+    def set_numbers(self, numbers):
+        self.tiles = [Tile(tile.tile_id, tile.terrain, n) for n, tile in zip(numbers, self.tiles)]
+
+    def set_ports(self, ports):
+        self.ports = ports
+
+
 class Tile(object):
     """
     class Tile represents a hex tile on the catan board.
