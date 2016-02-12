@@ -49,7 +49,7 @@ class Game(object):
             self.catanlog = catanlog.CatanLog()
         else:
             self.catanlog = catanlog.NoopCatanLog()
-        self.catanlog_reader = catanlog.Reader()
+        # self.catanlog_reader = catanlog.Reader()
 
         self.state = None # set in #set_state
         self.dev_card_state = None # set in #set_dev_card_state
@@ -136,8 +136,8 @@ class Game(object):
 
         self.notify_observers()
 
-    def read_from_file(self, file):
-        self.catanlog_reader.use_file(file)
+    # def read_from_file(self, file):
+    #     self.catanlog_reader.use_file(file)
 
     def notify(self, observable):
         self.notify_observers()
