@@ -354,7 +354,7 @@ class Game(object):
         giver = trade.giver()
         giving = trade.giving()
         getting = trade.getting()
-        if trade.getter() in catan.board.PortType:
+        if hasattr(trade.getter(), 'type') and trade.getter().type in catan.board.PortType:
             getter = trade.getter()
             self.catanlog.log_trades_with_port(giver, giving, getter, getting)
             logging.debug('trading {} to port={} to get={}'.format(giving, getter, getting))
