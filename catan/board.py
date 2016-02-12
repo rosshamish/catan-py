@@ -16,7 +16,7 @@ class Board(object):
 
     Use #get_pieces to get all the pieces at a particular coordinate of the allowed types.
     """
-    def __init__(self, terrain=None, numbers=None, ports=None, pieces=None, players=None):
+    def __init__(self, board=None, terrain=None, numbers=None, ports=None, pieces=None, players=None):
         """
         Create a new board. Creation will be delegated to module boardbuilder.
 
@@ -32,6 +32,8 @@ class Board(object):
         self.pieces = dict()
 
         self.opts = dict()
+        if board is not None:
+            self.opts['board'] = board
         if terrain is not None:
             self.opts['terrain'] = terrain
         if numbers is not None:
@@ -88,8 +90,10 @@ class Board(object):
     def unlock(self):
         self.state = states.BoardStateModifiable(self)
 
-    def reset(self, terrain=None, numbers=None, ports=None, pieces=None, players=None):
+    def reset(self, board=None, terrain=None, numbers=None, ports=None, pieces=None, players=None):
         opts = self.opts.copy()
+        if board is not None:
+            opts['board'] = board
         if terrain is not None:
             opts['terrain'] = terrain
         if numbers is not None:
@@ -271,6 +275,23 @@ class Terrain(Enum):
     def __repr__(self):
         return self.value
 
+    @staticmethod
+    def from_short_form(char):
+        if char == 'w':
+            return Terrain.wood
+        elif char == 'b':
+            return Terrain.brick
+        elif char == 'h':
+            return Terrain.wheat
+        elif char == 's':
+            return Terrain.sheep
+        elif char == 'o':
+            return Terrain.ore
+        elif char == 'd':
+            return Terrain.desert
+        else:
+            raise ValueError('Illegal Terrain short form {}'.format(char))
+
 
 class HexNumber(Enum):
     none = None
@@ -284,6 +305,13 @@ class HexNumber(Enum):
     ten = 10
     eleven = 11
     twelve = 12
+
+    @staticmethod
+    def from_digit_or_none(digit):
+        if digit == 'None' or digit is None:
+            return HexNumber.none
+        else:
+            return HexNumber(int(digit))
 
 
 class PortType(Enum):

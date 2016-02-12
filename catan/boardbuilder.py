@@ -56,6 +56,10 @@ def get_opts(opts):
         opts = dict()
     try:
         for key, val in opts.copy().items():
+            if key == 'board':
+                # board is a string, not a regular opt, and gets special handling
+                # in _read_tiles_from_string
+                continue
             opts[key] = Opt(val)
         _opts.update(opts)
     except Exception:
@@ -94,14 +98,17 @@ def modify(board, opts=None):
     :return: None
     """
     opts = get_opts(opts)
-    board.tiles = _generate_tiles(opts['terrain'], opts['numbers'])
-    board.ports = _generate_ports(opts['ports'])
+    if opts['board'] is not None:
+        board.tiles = _read_tiles_from_string(opts['board'])
+    else:
+        board.tiles = _generate_tiles(opts['terrain'], opts['numbers'])
+    board.ports = _get_ports(opts['ports'])
     board.state = catan.states.BoardStateModifiable(board)
-    board.pieces = _generate_pieces(board.tiles, board.ports, opts['players'], opts['pieces'])
+    board.pieces = _get_pieces(board.tiles, board.ports, opts['players'], opts['pieces'])
     return None
 
 
-def _generate_tiles(terrain_opts, numbers_opts):
+def _get_tiles(board=None, terrain=None, numbers=None):
     """
     Generate a list of tiles using the given terrain and numbers options.
 
@@ -121,6 +128,30 @@ def _generate_tiles(terrain_opts, numbers_opts):
     :param numbers_opts: Opt
     :return: list(Tile)
     """
+    if board is not None:
+        # we have a board given, ignore the terrain and numbers opts and log warnings
+        # if they were supplied
+        tiles = _read_tiles_from_string(board)
+    else:
+        # we are being asked to generate a board
+        tiles = _generate_tiles(terrain, numbers)
+
+    return tiles
+
+
+def _read_tiles_from_string(board_str):
+    terrain = [catan.board.Terrain.from_short_form(char) for char in board_str.split(' ')
+               if char in ('w', 'b', 'h', 's', 'o', 'd')]
+    numbers = [catan.board.HexNumber.from_digit_or_none(num) for num in board_str.split(' ')
+               if num in ('2','3','4','5','6','8','9','10','11','12','None')]
+    logging.info('terrain:{}, numbers:{}'.format(terrain, numbers))
+    tile_data = list(zip(terrain, numbers))
+    tiles = [catan.board.Tile(i, t, n) for i, (t, n) in enumerate(tile_data, 1)]
+
+    return tiles
+
+
+def _generate_tiles(terrain_opts, numbers_opts):
     terrain = None
     numbers = None
 
@@ -196,7 +227,7 @@ def _generate_tiles(terrain_opts, numbers_opts):
     return tiles
 
 
-def _generate_ports(port_opts):
+def _get_ports(port_opts):
     """
     Generate a list of ports using the given options.
 
@@ -226,7 +257,7 @@ def _generate_ports(port_opts):
         return []
 
 
-def _generate_pieces(tiles, ports, players_opts, pieces_opts):
+def _get_pieces(tiles, ports, players_opts, pieces_opts):
     """
     Generate a dictionary of pieces using the given options.
 
