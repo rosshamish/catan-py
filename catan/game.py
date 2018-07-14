@@ -26,7 +26,7 @@ class Game(object):
 
     e.g. self.set_state(states.GameStateNotInGame(self))
     """
-    def __init__(self, players=None, board=None, logging='on', pregame='on'):
+    def __init__(self, players=None, board=None, logging='on', pregame='on', use_stdout=False):
         """
         Create a Game with the given options.
 
@@ -34,6 +34,7 @@ class Game(object):
         :param board: Board
         :param logging: (on|off)
         :param pregame: (on|off)
+        :param use_stdout: bool (log to stdout?)
         """
         self.observers = set()
         self.undo_manager = undoredo.UndoManager()
@@ -46,7 +47,7 @@ class Game(object):
 
         # catanlog: writing, reading
         if logging == 'on':
-            self.catanlog = catanlog.CatanLog()
+            self.catanlog = catanlog.CatanLog(use_stdout=use_stdout)
         else:
             self.catanlog = catanlog.NoopCatanLog()
         # self.catanlog_reader = catanlog.Reader()
